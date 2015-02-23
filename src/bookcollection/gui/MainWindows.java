@@ -1,4 +1,4 @@
-package gui;
+package bookcollection.gui;
 
 import java.awt.EventQueue;
 
@@ -22,6 +22,8 @@ public class MainWindows {
 				}
 			}
 		});
+		
+		
 	}
 
 	/**
