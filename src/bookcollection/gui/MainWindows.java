@@ -3,13 +3,7 @@ package bookcollection.gui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
-
-import bookcollection.config.DirectoryInitializer;
-
 import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
 
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
@@ -18,11 +12,17 @@ import javax.swing.JMenuItem;
 import javax.swing.JFileChooser;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+
+import bookcollection.config.FilesInDirectory;
+import bookcollection.sqlite.SQLite;
+import bookcollection.test.TestsDatabaseInitializer;
 
 public class MainWindows {
 
@@ -77,15 +77,18 @@ public class MainWindows {
 		topPanel.setLayout( new BorderLayout() );
 		
 		
-		String	listData[] =
-			{
-				"Item 1",
-				"Item 2",
-				"Item 3",
-				"Item 4"
-			};
+		SQLite db = new SQLite();
+		db.createTables();
 		
+		// TestsDatabaseInitializer initDB = new TestsDatabaseInitializer();
+		// initDB.insertIntoBooksTable();		
+		
+		//db.insertTestData();
+		
+		String listData[] = db.getAllTags();
+
 		JList list = new JList(listData);
+		
 		list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		list.setLayoutOrientation(JList.VERTICAL);
 		list.setVisibleRowCount(-1);
@@ -93,7 +96,7 @@ public class MainWindows {
 		
 		//Create a split pane with the two scroll panes in it.
 		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-		                           topPanel, new JPanel());
+		                           topPanel, creatJTable());
 		splitPane.setOneTouchExpandable(true);
 		splitPane.setDividerLocation(150);
 
@@ -113,6 +116,10 @@ public class MainWindows {
 	}
 	
 	private class ChooseDirectoryMenuItem extends JMenuItem implements ActionListener{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		private File directory;
 		private JFileChooser chooser;
 		
@@ -124,7 +131,7 @@ public class MainWindows {
 		
 		private void initChooser(){
 			chooser = new JFileChooser();
-			chooser.setCurrentDirectory(new java.io.File("."));
+			chooser.setCurrentDirectory(new java.io.File("/home/zy/3Archive/collections/"));
 			chooser.setDialogTitle("Choose a directory");
 			chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			chooser.setAcceptAllFileFilterUsed(false);
@@ -135,11 +142,37 @@ public class MainWindows {
 			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 				directory = chooser.getSelectedFile();
 				System.out.println("getSelectedFile() : " + chooser.getSelectedFile());
+				
+				FilesInDirectory files = new FilesInDirectory(directory);
+				files.iterateAllFiles();
+				
+				for (File f : files.getFiles()){
+					System.out.println(f);
+				}
+				
 				} else {
 			      System.out.println("No Selection ");
 			    }
 		}
 	}
+	
+	private JScrollPane creatJTable(){
+		String[] columnNames = {"Authors",
+				"Title",
+                "Year",
+                };
+		Object[][] data = {
+			    {"Booth", "The craft of research", new Integer(2008)}
+			};
+		
+		JTable table = new JTable(data, columnNames);
+		
+		JScrollPane scrollPane = new JScrollPane(table);
+		table.setFillsViewportHeight(true);
+		
+		return scrollPane;
+	}
+		
 
 }
 
