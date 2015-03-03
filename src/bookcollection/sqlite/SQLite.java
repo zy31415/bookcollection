@@ -17,7 +17,7 @@ public class SQLite {
 	protected Statement stmt;
 	
 	public SQLite(){
-		db_file = new File("directory/info.db");
+		db_file = new File("/home/zy/3Archive/collections/.tagadir/info.db");
 		connection = null;
 		stmt = null;
 	}
@@ -54,7 +54,7 @@ public class SQLite {
         
         DirectoryInitializer dirInit;
         
-        dirInit = new DirectoryInitializer(new File("directory"));
+        dirInit = new DirectoryInitializer(db_file.getParentFile());
         
         dirInit.initDir();
        
@@ -189,5 +189,59 @@ public class SQLite {
         
         return outs;
 	}
+	
+	public boolean hasTag(String tag){
+		ResultSet result = null;
+        String [] outs = null;
+        
+		try {
+            setupConnection();
+            
+            String sql = String.format("select tag from tb_tags where tag='%s';", tag);
+            
+            result = stmt.executeQuery(sql);
+            
+            List<String> tp = new ArrayList<String>();
+
+            while (result.next()){
+            	tp.add(result.getString("tag"));
+			}
+            
+            outs = tp.toArray(new String[tp.size()]);
+            
+            closeConnection();
+        } catch ( Exception e ) {handleDatabaseError(e);}
+		
+		if (outs.length==1){
+			return true;
+		} else {
+			return false;
+		}
+			
+		
+	}
+	
+	public void addATag(String tag){
+        try {
+            setupConnection();
+            
+            String sql = String.format("insert into tb_tags ('tag') values ('%s');", tag);
+            
+            stmt.execute(sql);
+            
+            closeConnection();
+        } catch ( Exception e ) {handleDatabaseError(e);}
+        
+	}
+	
+	public void deleteATag(String tag){
+		try {
+            setupConnection();
+            String sql = String.format("delete from tb_tags where tag='%s';", tag);
+            stmt.execute(sql);
+            closeConnection();
+        } catch ( Exception e ) {handleDatabaseError(e);}
+	}
+
 
 }
