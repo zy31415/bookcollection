@@ -1,4 +1,4 @@
-package bookcollection.gui;
+package bookcollection.gui.tagspanel;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -13,6 +13,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.Box;
 
+import bookcollection.gui.DeleteATagDialog;
 import bookcollection.sqlite.SQLite;
 
 public class TagsPanel extends JPanel{

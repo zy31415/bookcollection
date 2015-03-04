@@ -1,4 +1,4 @@
-package bookcollection.gui;
+package bookcollection.gui.tagspanel;
 
 import javax.swing.JMenuItem;
 

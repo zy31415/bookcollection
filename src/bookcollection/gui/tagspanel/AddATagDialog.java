@@ -1,4 +1,4 @@
-package bookcollection.gui;
+package bookcollection.gui.tagspanel;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
 public class AddATagDialog implements ActionListener{
 	TagsPanel tagsPanel = null;
 	public AddATagDialog(TagsPanel tagsPanel){
-		this.tagsPanel = tagsPanel;		
+		this.tagsPanel = tagsPanel;
 	}
 	
 	public void actionPerformed(ActionEvent arg0) {

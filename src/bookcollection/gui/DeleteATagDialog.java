@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JOptionPane;
 
+import bookcollection.gui.tagspanel.TagsPanel;
+
 public class DeleteATagDialog implements ActionListener{
 	TagsPanel tagsPanel = null;
 	public DeleteATagDialog(TagsPanel tagsPanel){

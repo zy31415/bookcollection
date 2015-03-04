@@ -1,25 +1,18 @@
 package bookcollection.gui;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-import javax.swing.JFileChooser;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.JTabbedPane;
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
 
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
-import bookcollection.config.FilesInDirectory;
+import bookcollection.gui.docspanel.DocsPanel;
+import bookcollection.gui.tagspanel.AddATagMenuItem;
+import bookcollection.gui.tagspanel.TagsPanel;
 import bookcollection.sqlite.SQLite;
 import bookcollection.test.TestsDatabaseInitializer;
 
@@ -73,7 +66,7 @@ public class MainWindows {
 		
 		//Create a split pane with the two scroll panes in it.
 		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-				tagsPanel, creatJTable());
+				tagsPanel, new DocsPanel());
 		splitPane.setOneTouchExpandable(true);
 		splitPane.setDividerLocation(150);
 		
@@ -110,23 +103,6 @@ public class MainWindows {
 		public void actionPerformed(ActionEvent arg0) {
 			System.exit(0);			
 		}
-	}
-	
-	private JScrollPane creatJTable(){
-		String[] columnNames = {"Authors",
-				"Title",
-                "Year",
-                };
-		Object[][] data = {
-			    {"Booth", "The craft of research", new Integer(2008)}
-			};
-		
-		JTable table = new JTable(data, columnNames);
-		
-		JScrollPane scrollPane = new JScrollPane(table);
-		table.setFillsViewportHeight(true);
-		
-		return scrollPane;
 	}
 }
 
